@@ -127,11 +127,7 @@ fun MangaInfoBox(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
-        // Backdrop
-        val backdropGradientColors = listOf(
-            Color.Transparent,
-            MaterialTheme.colorScheme.background,
-        )
+        // Backdrop with clear artwork and soft bottom-only gradient blend
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(manga)
@@ -144,11 +140,18 @@ fun MangaInfoBox(
                 .drawWithContent {
                     drawContent()
                     drawRect(
-                        brush = Brush.verticalGradient(colors = backdropGradientColors),
+                        brush = Brush.verticalGradient(
+                            colorStops = arrayOf(
+                                0.0f to Color.Transparent,
+                                0.25f to Color.Transparent,
+                                0.55f to MaterialTheme.colorScheme.background.copy(alpha = 0.40f),
+                                0.82f to MaterialTheme.colorScheme.background.copy(alpha = 0.88f),
+                                1.0f to MaterialTheme.colorScheme.background,
+                            ),
+                        ),
                     )
                 }
-                .blur(4.dp)
-                .alpha(0.2f),
+                .alpha(0.88f),
         )
 
         // Manga & source info

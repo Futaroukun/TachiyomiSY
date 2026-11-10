@@ -33,10 +33,10 @@ android {
     namespace = "eu.kanade.tachiyomi"
 
     defaultConfig {
-        applicationId = "eu.kanade.tachiyomi.sy"
+        applicationId = "eu.kanade.tachiyomi.sy.oled"
 
-        versionCode = 84
-        versionName = "1.13.2"
+        versionCode = 9001
+        versionName = "1.13.2-oled"
 
         buildConfigField("String", "UPSTREAM_VERSION", """"0.21.3"""")
 

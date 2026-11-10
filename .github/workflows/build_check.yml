@@ -13,6 +13,8 @@ jobs:
   build:
     name: Build app
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Clone repo
@@ -30,8 +32,24 @@ jobs:
       - name: Build app
         run: ./gradlew assembleDebug
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v7
+      - name: Prepare APKs
+        run: |
+          mv app/build/outputs/apk/debug/app-arm64-v8a-debug.apk TachiyomiSY-arm64-v8a.apk
+          mv app/build/outputs/apk/debug/app-universal-debug.apk TachiyomiSY-universal.apk
+
+      - name: Publish Direct APK to GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: TachiyomiSY-OLED-debug
-          path: app/build/outputs/apk/debug/*.apk
+          tag_name: v1.13.2-oled-preview
+          name: "TachiyomiSY OLED Build Preview"
+          body: |
+            ### 📱 Download Langsung File APK:
+            * **TachiyomiSY-arm64-v8a.apk** (Rekomendasi untuk semua HP Android modern)
+            * **TachiyomiSY-universal.apk** (Versi kompatibel semua prosesor)
+          files: |
+            TachiyomiSY-arm64-v8a.apk
+            TachiyomiSY-universal.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
